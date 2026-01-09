@@ -36,13 +36,10 @@ RSpec.describe Jikanrb::Client do
 
       result = client.anime(1)
 
-      expect(result).to be_a(Jikanrb::IndifferentHash)
       expect(result[:data]).to be_a(Hash)
-      expect(result['data']).to eq(result[:data])
-      expect(result[:data][:mal_id]).to eq(1)
-      expect(result['data']['mal_id']).to eq(1)
-      expect(result[:data][:title]).to eq('Cowboy Bebop')
-      expect(result['data']['title']).to eq('Cowboy Bebop')
+      expect(result['data']).to be_a(Hash)
+      expect(result[:data]).to include(mal_id: 1, title: 'Cowboy Bebop')
+      expect(result['data']).to include('mal_id' => 1, 'title' => 'Cowboy Bebop')
     end
 
     it 'fetches full anime information' do
@@ -60,6 +57,7 @@ RSpec.describe Jikanrb::Client do
       result = client.anime(1, full: true)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
       expect(result['data']['mal_id']).to eq(1)
       expect(result['data']['relations']).to be_a(Array)
@@ -82,9 +80,10 @@ RSpec.describe Jikanrb::Client do
       result = client.manga(1)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
-      expect(result['data']['title']).to eq('Monster')
+      expect(result['data']).to include('mal_id' => 1, 'title' => 'Monster')
+      expect(result[:data]).to include(mal_id: 1, title: 'Monster')
     end
 
     it 'fetches full manga information' do
@@ -101,8 +100,10 @@ RSpec.describe Jikanrb::Client do
       result = client.manga(1, full: true)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
+      expect(result['data']).to include('mal_id' => 1, 'title' => 'Monster')
+      expect(result[:data]).to include(mal_id: 1, title: 'Monster')
     end
   end
 
@@ -122,8 +123,9 @@ RSpec.describe Jikanrb::Client do
 
       expect(result).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
-      expect(result['data']['name']).to eq('Spike Spiegel')
+      expect(result[:data]).to be_a(Hash)
+      expect(result['data']).to include('mal_id' => 1, 'name' => 'Spike Spiegel')
+      expect(result[:data]).to include(mal_id: 1, name: 'Spike Spiegel')
     end
 
     it 'fetches full character information' do
@@ -140,6 +142,7 @@ RSpec.describe Jikanrb::Client do
       result = client.character(1, full: true)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
       expect(result['data']['mal_id']).to eq(1)
     end
@@ -160,6 +163,7 @@ RSpec.describe Jikanrb::Client do
       result = client.person(1)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
       expect(result['data']['mal_id']).to eq(1)
     end
@@ -178,6 +182,7 @@ RSpec.describe Jikanrb::Client do
       result = client.person(1, full: true)
 
       expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
       expect(result['data']['mal_id']).to eq(1)
     end

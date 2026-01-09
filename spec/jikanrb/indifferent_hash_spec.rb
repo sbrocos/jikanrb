@@ -108,7 +108,7 @@ RSpec.describe Jikanrb::IndifferentHash do
     end
 
     it 'executes block if provided' do
-      expect(hash.fetch(:b) { 3 }).to eq(3)
+      expect(hash.fetch(:b, 3)).to eq(3)
     end
   end
 

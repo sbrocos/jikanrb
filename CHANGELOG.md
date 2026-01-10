@@ -1,6 +1,11 @@
 ## [Unreleased]
 
-## [0.2.0] - 2026-01-09
+## [0.2.1] - 2026-01-10
+
+### Changed
+  - Changed info about gem for Ru8byGems
+  
+## [0.2.0] - 2026-01-10
 
 ### Added
 - New endpoint methods:

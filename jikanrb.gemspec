@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'Ruby client for Jikan API v4 (Unofficial MyAnimeList API)'
   spec.description = 'A modern, well-documented Ruby wrapper for the Jikan REST API v4. ' \
                      'Provides easy access to anime, manga, characters, and more from MyAnimeList.'
-  spec.homepage = 'https://github.com/tuusuario/jikanrb'
+  spec.homepage = 'https://github.com/sbrocos/jikanrb'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.1.0'
 

@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.2.2] - 2026-01-20
+
+### Fixed
+- Fixed an issue where API requests were missing the `/v4` version segment in the URL.
+
 ## [0.2.1] - 2026-01-10
 
 ### Changed

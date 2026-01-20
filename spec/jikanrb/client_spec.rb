@@ -3,7 +3,7 @@
 RSpec.describe Jikanrb::Client do
   subject(:client) { described_class.new }
 
-  let(:base_url) { 'https://api.jikan.moe' }
+  let(:base_url) { 'https://api.jikan.moe/v4' }
 
   describe '#initialize' do
     it 'creates a new configuration' do
@@ -400,7 +400,7 @@ RSpec.describe Jikanrb::Client do
           .to_return(status: 400, body: '', headers: {})
 
         expect do
-          client.get('/anime', { invalid_param: 'bad value' })
+          client.get('anime', { invalid_param: 'bad value' })
         end.to raise_error(Jikanrb::BadRequestError)
       end
     end

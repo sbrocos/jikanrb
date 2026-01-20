@@ -53,7 +53,7 @@ module Jikanrb
     # @param full [Boolean] If true, returns extended information
     # @return [Hash] Anime data
     def anime(id, full: false)
-      path = full ? "/anime/#{id}/full" : "/anime/#{id}"
+      path = full ? "anime/#{id}/full" : "anime/#{id}"
       get(path)
     end
 
@@ -63,7 +63,7 @@ module Jikanrb
     # @param full [Boolean] If true, returns extended information
     # @return [Hash] Manga data
     def manga(id, full: false)
-      path = full ? "/manga/#{id}/full" : "/manga/#{id}"
+      path = full ? "manga/#{id}/full" : "manga/#{id}"
       get(path)
     end
 
@@ -73,7 +73,7 @@ module Jikanrb
     # @param full [Boolean] If true, returns extended information
     # @return [Hash] Character data
     def character(id, full: false)
-      path = full ? "/characters/#{id}/full" : "/characters/#{id}"
+      path = full ? "characters/#{id}/full" : "characters/#{id}"
       get(path)
     end
 
@@ -83,7 +83,7 @@ module Jikanrb
     # @param full [Boolean] If true, returns extended information
     # @return [Hash] Person data
     def person(id, full: false)
-      path = full ? "/people/#{id}/full" : "/people/#{id}"
+      path = full ? "people/#{id}/full" : "people/#{id}"
       get(path)
     end
 
@@ -93,7 +93,7 @@ module Jikanrb
     # @param params [Hash] Additional filters (type, score, status, etc.)
     # @return [Hash] Search results
     def search_anime(query, **params)
-      get('/anime', params.merge(q: query))
+      get('anime', params.merge(q: query))
     end
 
     # Search manga
@@ -102,7 +102,7 @@ module Jikanrb
     # @param params [Hash] Additional filters
     # @return [Hash] Search results
     def search_manga(query, **params)
-      get('/manga', params.merge(q: query))
+      get('manga', params.merge(q: query))
     end
 
     # Top anime
@@ -115,7 +115,7 @@ module Jikanrb
       params = { page: page }
       params[:type] = type if type
       params[:filter] = filter if filter
-      get('/top/anime', params)
+      get('top/anime', params)
     end
 
     # Top manga
@@ -128,7 +128,7 @@ module Jikanrb
       params = { page: page }
       params[:type] = type if type
       params[:filter] = filter if filter
-      get('/top/manga', params)
+      get('top/manga', params)
     end
 
     # Seasonal anime
@@ -138,7 +138,7 @@ module Jikanrb
     # @param page [Integer] Page number
     # @return [Hash] Seasonal anime
     def season(year, season, page: 1)
-      get("/seasons/#{year}/#{season}", page: page)
+      get("seasons/#{year}/#{season}", page: page)
     end
 
     # Current season
@@ -146,7 +146,7 @@ module Jikanrb
     # @param page [Integer] Page number
     # @return [Hash] Current season anime
     def season_now(page: 1)
-      get('/seasons/now', page: page)
+      get('seasons/now', page: page)
     end
 
     # Weekly schedule
@@ -154,7 +154,7 @@ module Jikanrb
     # @param day [String, nil] Day: "monday", "tuesday", etc.
     # @return [Hash] Anime schedule
     def schedules(day: nil)
-      path = day ? "/schedules/#{day}" : '/schedules'
+      path = day ? "schedules/#{day}" : 'schedules'
       get(path)
     end
 

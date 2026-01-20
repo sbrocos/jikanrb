@@ -10,7 +10,7 @@ module Jikanrb
   #   config.max_retries = 5
   class Configuration
     # Base URL for Jikan v4 API
-    DEFAULT_BASE_URL = 'https://api.jikan.moe/v4/'
+    DEFAULT_BASE_URL = 'https://api.jikan.moe/v4'
 
     # Default timeouts (in seconds)
     DEFAULT_OPEN_TIMEOUT = 5

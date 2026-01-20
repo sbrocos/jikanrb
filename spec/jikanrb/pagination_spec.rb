@@ -199,13 +199,13 @@ RSpec.describe Jikanrb::Pagination do
     end
 
     before do
-      stub_request(:get, 'https://api.jikan.moe/top/anime?page=1')
+      stub_request(:get, 'https://api.jikan.moe/v4/top/anime?page=1')
         .to_return(status: 200, body: page1_response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-      stub_request(:get, 'https://api.jikan.moe/top/anime?page=2')
+      stub_request(:get, 'https://api.jikan.moe/v4/top/anime?page=2')
         .to_return(status: 200, body: page2_response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-      stub_request(:get, 'https://api.jikan.moe/top/anime?page=3')
+      stub_request(:get, 'https://api.jikan.moe/v4/top/anime?page=3')
         .to_return(status: 200, body: page3_response.to_json, headers: { 'Content-Type' => 'application/json' })
     end
 

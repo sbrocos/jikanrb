@@ -107,14 +107,14 @@ RSpec.describe Jikanrb do
 
     describe '.character' do
       it 'delegates to client.character' do
-        expect(mock_client).to receive(:character).with(1, full: false)
+        expect(mock_client).to receive(:character).with(1)
         described_class.character(1)
       end
     end
 
     describe '.person' do
       it 'delegates to client.person' do
-        expect(mock_client).to receive(:person).with(1, full: false)
+        expect(mock_client).to receive(:person).with(1)
         described_class.person(1)
       end
     end

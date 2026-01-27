@@ -67,24 +67,46 @@ module Jikanrb
       get(path)
     end
 
-    # Character information by ID
+    # Returns a CharacterResource for fluent API access to character sub-resources
     #
     # @param id [Integer] Character ID on MyAnimeList
-    # @param full [Boolean] If true, returns extended information
-    # @return [Hash] Character data
-    def character(id, full: false)
-      path = full ? "characters/#{id}/full" : "characters/#{id}"
-      get(path)
+    # @return [Resources::CharacterResource] Character resource for chaining
+    #
+    # @example Get character info
+    #   client.character(1).info
+    #   # => { data: { mal_id: 1, name: "Spike Spiegel", ... } }
+    #
+    # @example Get full character info
+    #   client.character(1).info(full: true)
+    #
+    # @example Get character's anime appearances
+    #   client.character(1).animes
+    #
+    # @example Get character's voice actors
+    #   client.character(1).voices
+    def character(id)
+      Resources::CharacterResource.new(self, id)
     end
 
-    # Person information by ID
+    # Returns a PersonResource for fluent API access to person sub-resources
     #
     # @param id [Integer] Person ID on MyAnimeList
-    # @param full [Boolean] If true, returns extended information
-    # @return [Hash] Person data
-    def person(id, full: false)
-      path = full ? "people/#{id}/full" : "people/#{id}"
-      get(path)
+    # @return [Resources::PersonResource] Person resource for chaining
+    #
+    # @example Get person info
+    #   client.person(1).info
+    #   # => { data: { mal_id: 1, name: "Tomokazu Seki", ... } }
+    #
+    # @example Get full person info
+    #   client.person(1).info(full: true)
+    #
+    # @example Get person's anime staff positions
+    #   client.person(1).animes
+    #
+    # @example Get person's voice acting roles
+    #   client.person(1).voices
+    def person(id)
+      Resources::PersonResource.new(self, id)
     end
 
     # Search anime

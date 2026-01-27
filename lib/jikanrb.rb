@@ -7,6 +7,9 @@ require_relative 'jikanrb/pagination'
 require_relative 'jikanrb/client'
 require_relative 'jikanrb/utils'
 
+# Resources module - Fluent API for accessing sub-resources
+require_relative 'jikanrb/resources/base_resource'
+
 # Jikanrb is a modern Ruby wrapper for the Jikan REST API v4.
 # Provides easy access to anime, manga, characters, and more from MyAnimeList.
 #

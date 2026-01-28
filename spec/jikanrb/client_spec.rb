@@ -108,83 +108,30 @@ RSpec.describe Jikanrb::Client do
   end
 
   describe '#character' do
-    it 'fetches character by ID' do
-      response_body = {
-        data: {
-          mal_id: 1,
-          name: 'Spike Spiegel'
-        }
-      }.to_json
-
-      stub_request(:get, "#{base_url}/characters/1")
-        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
-
+    it 'returns a CharacterResource instance' do
       result = client.character(1)
 
-      expect(result).to be_a(Hash)
-      expect(result['data']).to be_a(Hash)
-      expect(result[:data]).to be_a(Hash)
-      expect(result['data']).to include('mal_id' => 1, 'name' => 'Spike Spiegel')
-      expect(result[:data]).to include(mal_id: 1, name: 'Spike Spiegel')
+      expect(result).to be_a(Jikanrb::Resources::CharacterResource)
     end
 
-    it 'fetches full character information' do
-      response_body = {
-        data: {
-          mal_id: 1,
-          name: 'Spike Spiegel'
-        }
-      }.to_json
+    it 'passes the correct ID to the resource' do
+      result = client.character(123)
 
-      stub_request(:get, "#{base_url}/characters/1/full")
-        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
-
-      result = client.character(1, full: true)
-
-      expect(result).to be_a(Hash)
-      expect(result[:data]).to be_a(Hash)
-      expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
+      expect(result.id).to eq(123)
     end
   end
 
   describe '#person' do
-    it 'fetches person by ID' do
-      response_body = {
-        data: {
-          mal_id: 1,
-          name: 'Rie Kugimiya'
-        }
-      }.to_json
-
-      stub_request(:get, "#{base_url}/people/1")
-        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
-
+    it 'returns a PersonResource instance' do
       result = client.person(1)
 
-      expect(result).to be_a(Hash)
-      expect(result[:data]).to be_a(Hash)
-      expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
+      expect(result).to be_a(Jikanrb::Resources::PersonResource)
     end
 
-    it 'fetches full person information' do
-      response_body = {
-        data: {
-          mal_id: 1,
-          name: 'Rie Kugimiya'
-        }
-      }.to_json
+    it 'passes the correct ID to the resource' do
+      result = client.person(456)
 
-      stub_request(:get, "#{base_url}/people/1/full")
-        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
-
-      result = client.person(1, full: true)
-
-      expect(result).to be_a(Hash)
-      expect(result[:data]).to be_a(Hash)
-      expect(result['data']).to be_a(Hash)
-      expect(result['data']['mal_id']).to eq(1)
+      expect(result.id).to eq(456)
     end
   end
 

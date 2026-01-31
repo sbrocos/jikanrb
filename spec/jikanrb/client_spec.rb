@@ -22,19 +22,7 @@ RSpec.describe Jikanrb::Client do
   end
 
   describe '#anime' do
-    it 'returns an AnimeResource instance' do
-      result = client.anime(1)
-
-      expect(result).to be_a(Jikanrb::Resources::AnimeResource)
-    end
-
-    it 'passes the correct ID to the resource' do
-      result = client.anime(123)
-
-      expect(result.id).to eq(123)
-    end
-
-    it 'fetches anime info via fluent API' do
+    it 'fetches anime by ID' do
       response_body = {
         data: {
           mal_id: 1,
@@ -46,7 +34,7 @@ RSpec.describe Jikanrb::Client do
       stub_request(:get, "#{base_url}/anime/1")
         .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
 
-      result = client.anime(1).info
+      result = client.anime(1)
 
       expect(result[:data]).to be_a(Hash)
       expect(result['data']).to be_a(Hash)
@@ -54,7 +42,7 @@ RSpec.describe Jikanrb::Client do
       expect(result['data']).to include('mal_id' => 1, 'title' => 'Cowboy Bebop')
     end
 
-    it 'fetches full anime information via fluent API' do
+    it 'fetches full anime information' do
       response_body = {
         data: {
           mal_id: 1,
@@ -66,7 +54,7 @@ RSpec.describe Jikanrb::Client do
       stub_request(:get, "#{base_url}/anime/1/full")
         .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
 
-      result = client.anime(1).info(full: true)
+      result = client.anime(1, full: true)
 
       expect(result).to be_a(Hash)
       expect(result[:data]).to be_a(Hash)
@@ -77,19 +65,7 @@ RSpec.describe Jikanrb::Client do
   end
 
   describe '#manga' do
-    it 'returns a MangaResource instance' do
-      result = client.manga(1)
-
-      expect(result).to be_a(Jikanrb::Resources::MangaResource)
-    end
-
-    it 'passes the correct ID to the resource' do
-      result = client.manga(123)
-
-      expect(result.id).to eq(123)
-    end
-
-    it 'fetches manga info via fluent API' do
+    it 'fetches manga by ID' do
       response_body = {
         data: {
           mal_id: 1,
@@ -101,7 +77,7 @@ RSpec.describe Jikanrb::Client do
       stub_request(:get, "#{base_url}/manga/1")
         .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
 
-      result = client.manga(1).info
+      result = client.manga(1)
 
       expect(result).to be_a(Hash)
       expect(result[:data]).to be_a(Hash)
@@ -110,7 +86,7 @@ RSpec.describe Jikanrb::Client do
       expect(result[:data]).to include(mal_id: 1, title: 'Monster')
     end
 
-    it 'fetches full manga information via fluent API' do
+    it 'fetches full manga information' do
       response_body = {
         data: {
           mal_id: 1,
@@ -121,7 +97,7 @@ RSpec.describe Jikanrb::Client do
       stub_request(:get, "#{base_url}/manga/1/full")
         .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
 
-      result = client.manga(1).info(full: true)
+      result = client.manga(1, full: true)
 
       expect(result).to be_a(Hash)
       expect(result[:data]).to be_a(Hash)
@@ -132,30 +108,83 @@ RSpec.describe Jikanrb::Client do
   end
 
   describe '#character' do
-    it 'returns a CharacterResource instance' do
+    it 'fetches character by ID' do
+      response_body = {
+        data: {
+          mal_id: 1,
+          name: 'Spike Spiegel'
+        }
+      }.to_json
+
+      stub_request(:get, "#{base_url}/characters/1")
+        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
+
       result = client.character(1)
 
-      expect(result).to be_a(Jikanrb::Resources::CharacterResource)
+      expect(result).to be_a(Hash)
+      expect(result['data']).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
+      expect(result['data']).to include('mal_id' => 1, 'name' => 'Spike Spiegel')
+      expect(result[:data]).to include(mal_id: 1, name: 'Spike Spiegel')
     end
 
-    it 'passes the correct ID to the resource' do
-      result = client.character(123)
+    it 'fetches full character information' do
+      response_body = {
+        data: {
+          mal_id: 1,
+          name: 'Spike Spiegel'
+        }
+      }.to_json
 
-      expect(result.id).to eq(123)
+      stub_request(:get, "#{base_url}/characters/1/full")
+        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
+
+      result = client.character(1, full: true)
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
+      expect(result['data']).to be_a(Hash)
+      expect(result['data']['mal_id']).to eq(1)
     end
   end
 
   describe '#person' do
-    it 'returns a PersonResource instance' do
+    it 'fetches person by ID' do
+      response_body = {
+        data: {
+          mal_id: 1,
+          name: 'Rie Kugimiya'
+        }
+      }.to_json
+
+      stub_request(:get, "#{base_url}/people/1")
+        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
+
       result = client.person(1)
 
-      expect(result).to be_a(Jikanrb::Resources::PersonResource)
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
+      expect(result['data']).to be_a(Hash)
+      expect(result['data']['mal_id']).to eq(1)
     end
 
-    it 'passes the correct ID to the resource' do
-      result = client.person(456)
+    it 'fetches full person information' do
+      response_body = {
+        data: {
+          mal_id: 1,
+          name: 'Rie Kugimiya'
+        }
+      }.to_json
 
-      expect(result.id).to eq(456)
+      stub_request(:get, "#{base_url}/people/1/full")
+        .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
+
+      result = client.person(1, full: true)
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_a(Hash)
+      expect(result['data']).to be_a(Hash)
+      expect(result['data']['mal_id']).to eq(1)
     end
   end
 
@@ -360,7 +389,7 @@ RSpec.describe Jikanrb::Client do
           .to_return(status: 404, body: '', headers: {})
 
         expect do
-          client.anime(999_999_999).info
+          client.anime(999_999_999)
         end.to raise_error(Jikanrb::NotFoundError, /not found/)
       end
     end
@@ -382,7 +411,7 @@ RSpec.describe Jikanrb::Client do
         allow_any_instance_of(Faraday::Connection).to receive(:get).and_raise(error)
 
         expect do
-          client.anime(1).info
+          client.anime(1)
         end.to raise_error(Jikanrb::ConnectionError, /Connection failed/)
       end
     end
@@ -392,7 +421,7 @@ RSpec.describe Jikanrb::Client do
         allow_any_instance_of(Faraday::Connection).to receive(:get).and_raise(Faraday::TimeoutError.new('Timeout'))
 
         expect do
-          client.anime(1).info
+          client.anime(1)
         end.to raise_error(Jikanrb::ConnectionError, /Connection failed/)
       end
     end
@@ -403,7 +432,7 @@ RSpec.describe Jikanrb::Client do
           .to_return(status: 200, body: 'invalid json{', headers: {})
 
         expect do
-          client.anime(1).info
+          client.anime(1)
         end.to raise_error(Jikanrb::ParseError, /Failed to parse JSON/)
       end
     end

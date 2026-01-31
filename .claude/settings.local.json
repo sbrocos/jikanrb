@@ -2,8 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(rubocop:*)",
-      "Bash(bundle exec rubocop:*)",
-      "mcp__acp__Bash"
+      "Bash(bundle exec rubocop:*)"
     ]
   }
 }

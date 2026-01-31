@@ -47,88 +47,44 @@ module Jikanrb
       request(:get, path, params)
     end
 
-    # Returns an AnimeResource for fluent API access to anime sub-resources
+    # Anime information by ID
     #
     # @param id [Integer] Anime ID on MyAnimeList
-    # @return [Resources::AnimeResource] Anime resource for chaining
-    #
-    # @example Get anime info
-    #   client.anime(1).info
-    #   # => { data: { mal_id: 1, title: "Cowboy Bebop", ... } }
-    #
-    # @example Get full anime info
-    #   client.anime(1).info(full: true)
-    #
-    # @example Get anime characters
-    #   client.anime(1).characters
-    #
-    # @example Get anime episodes
-    #   client.anime(1).episodes
-    def anime(id)
-      Resources::AnimeResource.new(self, id)
+    # @param full [Boolean] If true, returns extended information
+    # @return [Hash] Anime data
+    def anime(id, full: false)
+      path = full ? "anime/#{id}/full" : "anime/#{id}"
+      get(path)
     end
 
-    # Returns a MangaResource for fluent API access to manga sub-resources
+    # Manga information by ID
     #
     # @param id [Integer] Manga ID on MyAnimeList
-    # @return [Resources::MangaResource] Manga resource for chaining
-    #
-    # @example Get manga info
-    #   client.manga(1).info
-    #   # => { data: { mal_id: 1, title: "Monster", ... } }
-    #
-    # @example Get full manga info
-    #   client.manga(1).info(full: true)
-    #
-    # @example Get manga characters
-    #   client.manga(1).characters
-    #
-    # @example Get manga statistics
-    #   client.manga(1).statistics
-    def manga(id)
-      Resources::MangaResource.new(self, id)
+    # @param full [Boolean] If true, returns extended information
+    # @return [Hash] Manga data
+    def manga(id, full: false)
+      path = full ? "manga/#{id}/full" : "manga/#{id}"
+      get(path)
     end
 
-    # Returns a CharacterResource for fluent API access to character sub-resources
+    # Character information by ID
     #
     # @param id [Integer] Character ID on MyAnimeList
-    # @return [Resources::CharacterResource] Character resource for chaining
-    #
-    # @example Get character info
-    #   client.character(1).info
-    #   # => { data: { mal_id: 1, name: "Spike Spiegel", ... } }
-    #
-    # @example Get full character info
-    #   client.character(1).info(full: true)
-    #
-    # @example Get character's anime appearances
-    #   client.character(1).animes
-    #
-    # @example Get character's voice actors
-    #   client.character(1).voices
-    def character(id)
-      Resources::CharacterResource.new(self, id)
+    # @param full [Boolean] If true, returns extended information
+    # @return [Hash] Character data
+    def character(id, full: false)
+      path = full ? "characters/#{id}/full" : "characters/#{id}"
+      get(path)
     end
 
-    # Returns a PersonResource for fluent API access to person sub-resources
+    # Person information by ID
     #
     # @param id [Integer] Person ID on MyAnimeList
-    # @return [Resources::PersonResource] Person resource for chaining
-    #
-    # @example Get person info
-    #   client.person(1).info
-    #   # => { data: { mal_id: 1, name: "Tomokazu Seki", ... } }
-    #
-    # @example Get full person info
-    #   client.person(1).info(full: true)
-    #
-    # @example Get person's anime staff positions
-    #   client.person(1).animes
-    #
-    # @example Get person's voice acting roles
-    #   client.person(1).voices
-    def person(id)
-      Resources::PersonResource.new(self, id)
+    # @param full [Boolean] If true, returns extended information
+    # @return [Hash] Person data
+    def person(id, full: false)
+      path = full ? "people/#{id}/full" : "people/#{id}"
+      get(path)
     end
 
     # Search anime

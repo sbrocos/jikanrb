@@ -47,24 +47,46 @@ module Jikanrb
       request(:get, path, params)
     end
 
-    # Anime information by ID
+    # Returns an AnimeResource for fluent API access to anime sub-resources
     #
     # @param id [Integer] Anime ID on MyAnimeList
-    # @param full [Boolean] If true, returns extended information
-    # @return [Hash] Anime data
-    def anime(id, full: false)
-      path = full ? "anime/#{id}/full" : "anime/#{id}"
-      get(path)
+    # @return [Resources::AnimeResource] Anime resource for chaining
+    #
+    # @example Get anime info
+    #   client.anime(1).info
+    #   # => { data: { mal_id: 1, title: "Cowboy Bebop", ... } }
+    #
+    # @example Get full anime info
+    #   client.anime(1).info(full: true)
+    #
+    # @example Get anime characters
+    #   client.anime(1).characters
+    #
+    # @example Get anime episodes
+    #   client.anime(1).episodes
+    def anime(id)
+      Resources::AnimeResource.new(self, id)
     end
 
-    # Manga information by ID
+    # Returns a MangaResource for fluent API access to manga sub-resources
     #
     # @param id [Integer] Manga ID on MyAnimeList
-    # @param full [Boolean] If true, returns extended information
-    # @return [Hash] Manga data
-    def manga(id, full: false)
-      path = full ? "manga/#{id}/full" : "manga/#{id}"
-      get(path)
+    # @return [Resources::MangaResource] Manga resource for chaining
+    #
+    # @example Get manga info
+    #   client.manga(1).info
+    #   # => { data: { mal_id: 1, title: "Monster", ... } }
+    #
+    # @example Get full manga info
+    #   client.manga(1).info(full: true)
+    #
+    # @example Get manga characters
+    #   client.manga(1).characters
+    #
+    # @example Get manga statistics
+    #   client.manga(1).statistics
+    def manga(id)
+      Resources::MangaResource.new(self, id)
     end
 
     # Returns a CharacterResource for fluent API access to character sub-resources

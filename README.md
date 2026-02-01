@@ -1,7 +1,7 @@
 # Jikanrb
 
 [![Gem Version](https://badge.fury.io/rb/jikanrb.svg)](https://badge.fury.io/rb/jikanrb)
-[![CI](https://github.com/tuusuario/jikanrb/actions/workflows/main.yml/badge.svg)](https://github.com/tuusuario/jikanrb/actions)
+[![CI](https://github.com/sbrocos/jikanrb/actions/workflows/main.yml/badge.svg)](https://github.com/sbrocos/jikanrb/actions)
 
 A modern Ruby client for the [Jikan API v4](https://jikan.moe/) - the unofficial MyAnimeList API.
 
@@ -10,7 +10,7 @@ A modern Ruby client for the [Jikan API v4](https://jikan.moe/) - the unofficial
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'jikanrb'
+gem "jikanrb"
 ```
 
 And then execute:
@@ -30,17 +30,14 @@ gem install jikanrb
 ### Quick Start
 
 ```ruby
-require 'jikanrb'
+require "jikanrb"
 
-# Get anime by ID
-anime = Jikanrb.anime(1)
-
-# Access data using strings or symbols (Indifferent Access)
-puts anime["data"]["title"] # => "Cowboy Bebop"
-puts anime[:data][:title]   # => "Cowboy Bebop"
+# Get anime info using fluent API
+anime = Jikanrb.anime(1).info
+puts anime[:data][:title]  # => "Cowboy Bebop"
 
 # Get full anime info (includes relations, theme songs, etc.)
-anime = Jikanrb.anime(1, full: true)
+anime = Jikanrb.anime(1).info(full: true)
 
 # Search anime
 results = Jikanrb.search_anime("Naruto")
@@ -57,11 +54,13 @@ client = Jikanrb::Client.new do |config|
   config.max_retries = 5
 end
 
-# All methods available
-client.anime(1)
-client.manga(1)
-client.character(1)
-client.person(1)
+# Fluent API for resources
+client.anime(1).info
+client.manga(1).info
+client.character(1).info
+client.person(1).info
+
+# Search and listings
 client.search_anime("One Piece", type: "tv", status: "airing")
 client.top_anime(type: "tv", filter: "bypopularity")
 client.season(2024, "winter")
@@ -69,18 +68,74 @@ client.season_now
 client.schedules(day: "monday")
 ```
 
-### Configuration in Rails
+## Fluent API (v1.1.0+)
 
-You can configure the gem globally in an initializer (e.g., `config/initializers/jikanrb.rb`):
+Access sub-resources using the fluent interface for cleaner, chainable code.
+
+### Anime
 
 ```ruby
-# config/initializers/jikanrb.rb
-Jikanrb.configure do |config|
-  config.read_timeout = 20
-  config.max_retries = 3
-  # config.logger = Rails.logger # Use Rails logger
-end
+client = Jikanrb::Client.new
+
+# Basic and full info
+client.anime(1).info                # GET /anime/1
+client.anime(1).info(full: true)    # GET /anime/1/full
+
+# Sub-resources
+client.anime(1).characters          # Characters and voice actors
+client.anime(1).staff               # Staff members
+client.anime(1).episodes            # Episodes (first page)
+client.anime(1).episodes(page: 2)   # Episodes (page 2)
+client.anime(1).news                # News articles
+client.anime(1).forum               # Forum topics
+client.anime(1).videos              # PVs, episodes, music videos
+client.anime(1).pictures            # Pictures
+client.anime(1).statistics          # User statistics
+client.anime(1).recommendations     # User recommendations
+client.anime(1).relations           # Related anime/manga
+client.anime(1).themes              # Opening/ending themes
+client.anime(1).external            # External links
+client.anime(1).streaming           # Streaming platform links
 ```
+
+### Manga
+
+```ruby
+client.manga(1).info                # GET /manga/1
+client.manga(1).info(full: true)    # GET /manga/1/full
+client.manga(1).characters          # Characters
+client.manga(1).news                # News articles
+client.manga(1).forum               # Forum topics
+client.manga(1).pictures            # Pictures
+client.manga(1).statistics          # User statistics
+client.manga(1).recommendations     # User recommendations
+client.manga(1).relations           # Related anime/manga
+client.manga(1).external            # External links
+```
+
+### Characters
+
+```ruby
+client.character(1).info            # GET /characters/1
+client.character(1).info(full: true)# GET /characters/1/full
+client.character(1).animes          # Anime appearances
+client.character(1).mangas          # Manga appearances
+client.character(1).voices          # Voice actors
+client.character(1).pictures        # Pictures
+```
+
+### People
+
+```ruby
+client.person(1).info               # GET /people/1
+client.person(1).info(full: true)   # GET /people/1/full
+client.person(1).animes             # Anime staff positions
+client.person(1).mangas             # Manga work
+client.person(1).voices             # Voice acting roles
+client.person(1).pictures           # Pictures
+```
+
+## Configuration
 
 ### Global Configuration
 
@@ -95,14 +150,33 @@ Jikanrb.configure do |config|
 end
 ```
 
-### Available Methods
+### Rails Configuration
+
+Create an initializer (e.g., `config/initializers/jikanrb.rb`):
+
+```ruby
+Jikanrb.configure do |config|
+  config.read_timeout = 20
+  config.max_retries = 3
+  config.logger = Rails.logger
+end
+```
+
+## Available Methods
+
+### Resource Methods (Fluent API)
+
+| Method | Returns | Description |
+| :--- | :--- | :--- |
+| `anime(id)` | `AnimeResource` | Anime resource for sub-resource access |
+| `manga(id)` | `MangaResource` | Manga resource for sub-resource access |
+| `character(id)` | `CharacterResource` | Character resource for sub-resource access |
+| `person(id)` | `PersonResource` | Person resource for sub-resource access |
+
+### Direct Methods
 
 | Method | Description |
 | :--- | :--- |
-| `anime(id, full: false)` | Get anime by MAL ID |
-| `manga(id, full: false)` | Get manga by MAL ID |
-| `character(id, full: false)` | Get character by MAL ID |
-| `person(id, full: false)` | Get person by MAL ID |
 | `search_anime(query, **params)` | Search anime |
 | `search_manga(query, **params)` | Search manga |
 | `top_anime(type:, filter:, page:)` | Top anime list |
@@ -111,11 +185,11 @@ end
 | `season_now(page:)` | Current season anime |
 | `schedules(day:)` | Weekly schedule |
 
-### Error Handling
+## Error Handling
 
 ```ruby
 begin
-  anime = Jikanrb.anime(999999999)
+  anime = Jikanrb.anime(999999999).info
 rescue Jikanrb::NotFoundError => e
   puts "Anime not found: #{e.message}"
 rescue Jikanrb::RateLimitError => e
@@ -127,21 +201,22 @@ rescue Jikanrb::Error => e
 end
 ```
 
-### Pagination
+## Pagination
 
 The gem provides convenient pagination helpers for working with paginated endpoints:
 
 ```ruby
-# Automatic pagination - iterates through all pages
 client = Jikanrb::Client.new
-paginator = client.paginate(:top_anime, type: 'tv')
+
+# Automatic pagination - iterates through all pages
+paginator = client.paginate(:top_anime, type: "tv")
 
 # Get all items (will fetch all pages)
 all_anime = paginator.all
 
 # Iterate through all pages lazily
 paginator.each do |anime|
-  puts "#{anime['title']} - Score: #{anime['score']}"
+  puts "#{anime["title"]} - Score: #{anime["score"]}"
 end
 
 # Get items from first 3 pages only
@@ -153,23 +228,14 @@ pagination = client.pagination_info(response)
 
 puts "Current page: #{pagination.current_page}"
 puts "Total pages: #{pagination.total_pages}"
-puts "Items per page: #{pagination.per_page}"
 puts "Has next page: #{pagination.has_next_page?}"
-puts "Has previous page: #{pagination.has_previous_page?}"
-puts "Next page number: #{pagination.next_page}" if pagination.has_next_page?
 ```
 
-### Rate Limiting
+## Rate Limiting
 
 Jikan API allows **60 requests per minute**. This gem includes automatic retry with exponential backoff for rate limit errors (429).
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-### Useful Commands
 
 ```bash
 # Install dependencies
@@ -178,11 +244,14 @@ bin/setup
 # Run tests
 bundle exec rspec
 
+# Run linter
+bundle exec rubocop
+
 # Interactive console
 bin/console
 
-# Linting
-bundle exec rubocop
+# Generate documentation
+bundle exec yard doc
 ```
 
 ## Acknowledgments
@@ -191,12 +260,8 @@ This gem is inspired by [jikan.rb](https://github.com/Zerocchi/jikan.rb) by Zero
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at <https://github.com/[USERNAME]/jikanrb>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/jikanrb/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/sbrocos/jikanrb.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Jikanrb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/jikanrb/blob/main/CODE_OF_CONDUCT.md).

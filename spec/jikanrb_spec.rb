@@ -88,19 +88,14 @@ RSpec.describe Jikanrb do
 
     describe '.anime' do
       it 'delegates to client.anime' do
-        expect(mock_client).to receive(:anime).with(1, full: false)
+        expect(mock_client).to receive(:anime).with(1)
         described_class.anime(1)
-      end
-
-      it 'passes full parameter' do
-        expect(mock_client).to receive(:anime).with(1, full: true)
-        described_class.anime(1, full: true)
       end
     end
 
     describe '.manga' do
       it 'delegates to client.manga' do
-        expect(mock_client).to receive(:manga).with(1, full: false)
+        expect(mock_client).to receive(:manga).with(1)
         described_class.manga(1)
       end
     end

@@ -11,8 +11,8 @@
 .rspec_status
 
 # AI
-.claude
-.agent
+.claude/
+.agent/
 
 # Editor helpers
 .ruby-lsp

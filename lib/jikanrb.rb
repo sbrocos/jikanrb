@@ -9,6 +9,8 @@ require_relative 'jikanrb/utils'
 
 # Resources module - Fluent API for accessing sub-resources
 require_relative 'jikanrb/resources/base_resource'
+require_relative 'jikanrb/resources/anime_resource'
+require_relative 'jikanrb/resources/manga_resource'
 require_relative 'jikanrb/resources/character_resource'
 require_relative 'jikanrb/resources/person_resource'
 
@@ -74,13 +76,13 @@ module Jikanrb
     # Allows using Jikanrb.anime(1) directly
 
     # @see Client#anime
-    def anime(id, full: false)
-      client.anime(id, full: full)
+    def anime(id)
+      client.anime(id)
     end
 
     # @see Client#manga
-    def manga(id, full: false)
-      client.manga(id, full: full)
+    def manga(id)
+      client.manga(id)
     end
 
     # @see Client#character
